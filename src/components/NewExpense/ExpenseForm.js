@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "./ExpenseForm.css";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -28,7 +28,13 @@ const ExpenseForm = () => {
       date: new Date(enteredDate), // Parsing entered string date and converting to a date object
     };
 
-    console.log(expenseData);
+    /* CHILD-TO-PARENT COMPONENT COMMUNICATION 
+    Since onAddExpenseData has been passed into the Expense form, it 
+    expects expense data to be sent into it. Thus, the .prop calls onAddExpenseData
+    which refers to the function addExpenseDataHandler which in turn expects expenseData 
+    as a parameter 
+       */
+    props.onAddExpenseData(expenseData);
     // Overriding what the user entered with an empty string after
     //submitting the form (clearing the input)
     setEnteredTitle("");
