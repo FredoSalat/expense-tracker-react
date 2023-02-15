@@ -19,12 +19,33 @@ const ExpenseForm = () => {
     setEnteredDate(event.target.value);
   };
 
+  const submitHandler = (event) => {
+    event.preventDefault(); // preventing page reload
+
+    const expenseData = {
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date(enteredDate), // Parsing entered string date and converting to a date object
+    };
+
+    console.log(expenseData);
+    // Overriding what the user entered with an empty string after
+    //submitting the form (clearing the input)
+    setEnteredTitle("");
+    setEnteredAmount("");
+    setEnteredDate("");
+  };
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -32,6 +53,7 @@ const ExpenseForm = () => {
             type="number"
             min="0.01"
             step="0.01"
+            value={enteredAmount}
             onChange={amountChangeHandler}
           />
         </div>
@@ -41,6 +63,7 @@ const ExpenseForm = () => {
             type="date"
             min="2023-01-01"
             max="2025-01-01"
+            value={enteredDate}
             onChange={dateChangeHandler}
           />
         </div>
@@ -53,3 +76,24 @@ const ExpenseForm = () => {
 };
 
 export default ExpenseForm;
+
+/* cleaner version using one state that does not need repeatable code 
+and ensures the latest state is always received  */
+
+/*   const [userInput, setUserInput] = useState({
+    enteredTitle: "",
+    enteredAmount: "",
+    enteredDate: "",
+  });
+ */
+
+/* The set userUserInput function receives and anonymous function that
+   in turn receives the previous state of what is passed into useState (this implementation guarantees
+   that setUserInput always receives the latest state). In this case 
+   the state of the object passed into useState object. 
+   Spread operator (...) takes all the key value pairs of the object (userInput) */
+
+/*   setUserInput((prevState) => {
+    return { ...prevState, enteredTitle: event.target.value };
+  });
+}; */
